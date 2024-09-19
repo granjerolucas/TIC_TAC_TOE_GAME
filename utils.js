@@ -54,6 +54,7 @@ export function findWinner(_panelState, currentMove) {
       // break;
       // return true;
       return {
+        condition: WIN_CONDITION[i],
         player: currentMove,
         success: true,
         tie: false

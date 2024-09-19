@@ -49,7 +49,11 @@
               <span class="o-info">O</span>
             </div>
             <div class="current-player">
-              <button class="x-turn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button
+                class="x-turn"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
                 <span class="current-turn">X</span>
                 <span class="">TURN</span>
               </button>
@@ -92,25 +96,39 @@
     >
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+          <!-- <div class="modal-body"> -->
+          <div class="modal-body x-win">
+            <p>YOU WON!</p>
+            <p><span>X</span>&nbsp;TAKES THE ROUND</p>
+            <div>
+              <button class="btn-game btn-quit" value="quit">QUIT</button>
+              <button class="btn-game btn-next-round" value="next">
+                NEXT ROUND
+              </button>
+            </div>
           </div>
-          <div class="modal-body">...</div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="modalRestart"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- <div class="modal-body"> -->
+          <div class="modal-body x-win">
+            <p></p>
+            <p>RESTART GAME?</p>
+            <div>
+              <button class="btn-game btn-quit" value="no">NO, CANCEL</button>
+              <button class="btn-game btn-next-round" value="yes">
+                YES, RESTART
+              </button>
+            </div>
           </div>
         </div>
       </div>

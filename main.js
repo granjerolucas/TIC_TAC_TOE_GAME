@@ -31,14 +31,38 @@ const btnRestart = document.querySelector(".restart button");
 const btnPlay = document.querySelectorAll(".btn-play");
 const eleCurrentPlayer = document.querySelector(".current-player");
 const choiseMark = document.querySelectorAll(".choise-mark button");
+const btnGame = document.querySelectorAll("#exampleModal .btn-game");
+const btnRestarCondition = document.querySelectorAll("#modalRestart .btn-game");
 
 const boxPlayerA = document.querySelector(".playerA");
 const boxPlayerTies = document.querySelector(".playerTies");
 const boxPlayerB = document.querySelector(".playerB");
 
-const myModal = new bootstrap.Modal('#exampleModal')
+const myModal = document.querySelector("#exampleModal");
+const modalRestart = document.querySelector("#modalRestart");
+// myModal.show()
+console.log(btnGame);
 
-console.log(choiseMark);
+btnGame.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    console.log(e.target.value);
+    // if (e.target.value === "quit") {
+
+    cleanGame(true);
+    myModal.classList.remove("show");
+  });
+});
+
+btnRestarCondition.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    console.log(e.target.value);
+    if (e.target.value === "yes") {
+      // cleanGame(true);
+    } else {
+      modalRestart.classList.remove("show");
+    }
+  });
+});
 
 btnPlay.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -82,9 +106,7 @@ choiseMark.forEach((btn) => {
   });
 });
 btnRestart.addEventListener("click", () => {
-  console.log("restart");
-  init(true);
-  console.log(GAME_STATE);
+  modalRestart.classList.add("show");
 });
 const clickCard = (e) => {
   console.log(e);
@@ -111,6 +133,9 @@ const clickCard = (e) => {
     let res = findWinner([], GAME_STATE.currentMove);
     if (!res.success) {
       changeTurn(GAME_STATE, eleCurrentPlayer);
+      if (res.tie) {
+        
+      }
     } else {
       console.log("resultado", "Show modal", res.player, { ...GAME_STATE });
       if (+res.player.id === +GAME_STATE.player1.moveType.id) {
@@ -118,9 +143,30 @@ const clickCard = (e) => {
       } else {
         GAME_STATE.player2.score++;
       }
+
       drawScore();
-      cleanGame(true);
-      console.log('chuchas', [...PANEL_STATE]);
+      // cleanGame(true);
+      console.log("chuchas", [...PANEL_STATE]);
+      gameBoard.querySelectorAll("button").forEach((btn) => {
+        console.log(res.condition);
+        res.condition.forEach((val) => {
+          if (btn.value === `${val[0]}-${val[1]}`) {
+            btn.classList.add("win");
+          }
+        });
+      });
+      const modBody = myModal.querySelector(".modal-body");
+      if (res.player.id === MOVE1.id) {
+        modBody.classList.add("x-win");
+        modBody.classList.remove("o-win");
+        modBody.querySelector("span").innerText = "X";
+      } else {
+        modBody.classList.add("o-win");
+        modBody.classList.remove("x-win");
+        modBody.querySelector("span").innerText = "O";
+      }
+
+      myModal.classList.add("show");
     }
     console.log("resultado", res);
   }
@@ -179,7 +225,6 @@ function cleanGame(reset = false) {
   // } else {
   // }
   gameBoard.querySelectorAll("button").forEach((btn) => {
-    console.log(btn);
     btn.addEventListener("click", clickCard);
   });
 }
