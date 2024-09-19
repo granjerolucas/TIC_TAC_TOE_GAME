@@ -7,22 +7,24 @@ import {
   isCellEmpty,
 } from "./utils.js";
 console.log(PANEL_STATE);
-
-const GAME_STATE = {
-  player1: {
-    moveType: MOVE1,
-    isCpu: false,
-    score: 0,
-  },
-  player2: {
-    moveType: MOVE2,
-    isCpu: false,
-    score: 0,
-  },
-  ties: 0,
-  currentMove: MOVE1,
-  isVsPlayer: false,
-};
+function getBaseState () {
+  return {
+    player1: {
+      moveType: MOVE1,
+      isCpu: false,
+      score: 0,
+    },
+    player2: {
+      moveType: MOVE2,
+      isCpu: false,
+      score: 0,
+    },
+    ties: 0,
+    currentMove: MOVE1,
+    isVsPlayer: false,
+  }
+} 
+var GAME_STATE = getBaseState();
 
 const gameBoard = document.querySelector(".game-board");
 const optionsGame = document.querySelector(".options-game");
@@ -46,9 +48,14 @@ console.log(btnGame);
 btnGame.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     console.log(e.target.value);
-    // if (e.target.value === "quit") {
 
-    cleanGame(true);
+    if (e.target.value === "quit") {
+      myModal.classList.remove("show");
+      start()
+    } else {
+      cleanGame(true);
+    }
+
     myModal.classList.remove("show");
   });
 });
@@ -58,6 +65,8 @@ btnRestarCondition.forEach((btn) => {
     console.log(e.target.value);
     if (e.target.value === "yes") {
       // cleanGame(true);
+      modalRestart.classList.remove("show");
+      start();
     } else {
       modalRestart.classList.remove("show");
     }
@@ -107,6 +116,7 @@ choiseMark.forEach((btn) => {
 });
 btnRestart.addEventListener("click", () => {
   modalRestart.classList.add("show");
+  
 });
 const clickCard = (e) => {
   console.log(e);
@@ -131,13 +141,18 @@ const clickCard = (e) => {
     console.log(PANEL_STATE);
     e.currentTarget.replaceChild(span, e.currentTarget.firstChild);
     let res = findWinner([], GAME_STATE.currentMove);
+    const modBody = myModal.querySelector(".modal-body");
+
     if (!res.success) {
       changeTurn(GAME_STATE, eleCurrentPlayer);
       if (res.tie) {
-        
+        GAME_STATE.player1.score++;
+        GAME_STATE.player2.score++;
+        drawScore();
+        modBody.querySelectorAll("p")[0].innerText = "TIE!";
+        myModal.classList.add("show");
       }
     } else {
-      console.log("resultado", "Show modal", res.player, { ...GAME_STATE });
       if (+res.player.id === +GAME_STATE.player1.moveType.id) {
         GAME_STATE.player1.score++;
       } else {
@@ -155,7 +170,8 @@ const clickCard = (e) => {
           }
         });
       });
-      const modBody = myModal.querySelector(".modal-body");
+      modBody.querySelectorAll("p")[0].innerText = "YOU WON!";
+
       if (res.player.id === MOVE1.id) {
         modBody.classList.add("x-win");
         modBody.classList.remove("o-win");
@@ -174,7 +190,7 @@ const clickCard = (e) => {
 };
 function drawScore() {
   boxPlayerTies.querySelector("span").innerText = GAME_STATE.ties;
-  if (GAME_STATE.player1.id === MOVE1.id) {
+  if (GAME_STATE.player1.moveType.id === MOVE1.id) {
     boxPlayerA.querySelector("span").innerText = GAME_STATE.player1.score;
     boxPlayerB.querySelector("span").innerText = GAME_STATE.player2.score;
   } else {
@@ -229,7 +245,7 @@ function cleanGame(reset = false) {
   });
 }
 
-const init = (reset = false) => {
+function init (reset = false) {
   containerGame.classList.remove("d-none");
   optionsGame.classList.add("d-none");
   console.log({ ...GAME_STATE });
@@ -247,7 +263,17 @@ const init = (reset = false) => {
   boxPlayerTies.querySelector("span").innerText = 0;
   boxPlayerB.querySelector("span").innerText = 0;
   boxPlayerA.querySelector("span").innerText = 0;
-  cleanGame();
+  cleanGame(reset);
 };
 
+
+function start () {
+  containerGame.classList.add("d-none");
+  optionsGame.classList.remove("d-none");
+  console.log('lanotaaaaaaaaaaa',{ ...getBaseState() });
+  GAME_STATE = getBaseState();
+  console.log('lanotaaaaaaaaaaa2',{ ...GAME_STATE });
+  // init();
+}
+start();
 // init();

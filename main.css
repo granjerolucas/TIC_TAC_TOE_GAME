@@ -45,6 +45,7 @@ h2 {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: 1rem;
+  justify-items: center;
   /* border-radius: 1rem; */
   /* background-color: red */
 }
@@ -325,6 +326,7 @@ h2 {
         &.x-win {
           color: var(--x-option);
         }
+        
         p {
           font-size: 1.5rem;
           &:nth-child(2) {
