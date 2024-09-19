@@ -108,7 +108,17 @@ h2 {
 .card-action {
   background-color: var(--secondary-color);
 }
-
+.info {
+  font-family: 'Arista20Alternate';
+  font-size: 2rem;
+  line-height: normal;
+  .x-info {
+    color: var(--x-option);
+  }
+  .o-info {
+    color: var(--o-option);
+  }
+}
 .panel-game {
   font-family: "Arista20Alternate";
   /* font-size: 1rem; */
@@ -127,16 +137,7 @@ h2 {
       fill: var(--text-color);
     }
   }
-  .info {
-    font-size: 2rem;
-    line-height: normal;
-    .x-info {
-      color: var(--x-option);
-    }
-    .o-info {
-      color: var(--o-option);
-    }
-  }
+
   .current-player {
     display: flex;
     justify-content: center;
@@ -154,7 +155,7 @@ h2 {
       padding: 0rem 0.7rem;
       border-radius: calc(var(--border-radius) / 2);
       box-shadow: 0px 0.3rem 0px 0px var(--shadow-color);
-  
+
       &.x-turn {
         color: var(--x-option);
       }
@@ -167,7 +168,6 @@ h2 {
         line-height: normal;
         &.current-turn {
           font-family: "Arista20Alternate";
-         
         }
       }
     }
@@ -190,8 +190,7 @@ h2 {
     align-items: center;
     box-shadow: 0px 0.3rem 0px 0px var(--shadow-color);
     &.playerB {
-    background-color: var(--o-option);
-      
+      background-color: var(--o-option);
     }
     p {
       font-family: "Roboto";
@@ -208,6 +207,58 @@ h2 {
 
       line-height: normal;
       margin: 0px;
+    }
+  }
+}
+
+.options-game {
+  font-family: "Roboto";
+  text-align: center;
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    /* background-color: red; */
+    padding: 1rem;
+    > button {
+      padding: 0.5rem;
+      border-radius: calc(var(--border-radius) / 2);
+      border: none;
+      background-color: var(--o-option);
+      box-shadow: 0px 0.3rem 0px 0px #99772c;
+      font-weight: bold;
+      &:nth-last-child(1) {
+        background-color: var(--x-option);
+        box-shadow: 0px 0.3rem 0px 0px var(--shadow2-color);
+      }
+    }
+  }
+  .card-options {
+    color: var(--x-option);
+    background-color: var(--secondary-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    .choise-mark {
+      display: flex;
+      justify-content: space-between;
+      background-color: var(--primary-color);
+      border-radius: calc(var(--border-radius) / 2);
+      padding: 0.3rem;
+      button {
+        width: 100%;
+
+        /* padding: 2rem; */
+        border: none;
+        font-family: "Arista20Alternate";
+        font-size: 1.5rem;
+        border-radius: calc(var(--border-radius) / 2);
+        background-color: var(--primary-color);
+        color: var(--x-option);
+        &.active {
+          color: var(--primary-color);
+          background-color: var(--x-option);
+        }
+      }
     }
   }
 }

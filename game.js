@@ -10,7 +10,7 @@ export const MOVE2 = { id: 2, label: "O" }; //O
 // 02 12 22
 
 
-export const GAME_STATE = [
+export const PANEL_STATE = [
   [0, 0, 0],
   [0, 0, 0],
   [0, 0, 0],

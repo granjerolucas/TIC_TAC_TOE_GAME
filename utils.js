@@ -1,4 +1,4 @@
-import { GAME_STATE, MOVE1, MOVE2, WIN_CONDITION } from "./game.js";
+import { PANEL_STATE, MOVE1, MOVE2, WIN_CONDITION } from "./game.js";
 
 {
   /* <div class="card-action shadow-sm">
@@ -18,19 +18,22 @@ export function getBox(row, col) {
   div.appendChild(btn);
   return div;
 }
-
+export function cleanPanelState() {
+  PANEL_STATE.forEach((row, i) => {
+    row.forEach((cell, j) => {
+      PANEL_STATE[i][j] = 0;
+    });
+  });
+  console.log([...PANEL_STATE])
+}
 export function findWinner(_panelState, currentMove) {
-  let panelState = [...GAME_STATE];
-  console.log("findWinner panelState", panelState);
-  console.log("findWinner WIN_CONDITION", WIN_CONDITION);
-  // let winCondition = WIN_CONDITION[currentMove.id - 1];
   let count = 0;
   for (let i = 0; i < WIN_CONDITION.length; i++) {
     let success = true;
     for (let j = 0; j < WIN_CONDITION[i].length; j++) {
       let [row, col] = WIN_CONDITION[i][j];
 
-      if (GAME_STATE[row][col] === 0) {
+      if (PANEL_STATE[row][col] === 0) {
         //   // continue;
         success = false;
         console.log("findWinner omitir en", row, col);
@@ -39,8 +42,8 @@ export function findWinner(_panelState, currentMove) {
         //   break;
       } else {
         console.log("findWinner cond", row, col);
-        console.log("findWinner state", GAME_STATE[row][col]);
-        if (currentMove.id !== GAME_STATE[row][col]) {
+        console.log("findWinner state", PANEL_STATE[row][col]);
+        if (currentMove.id !== PANEL_STATE[row][col]) {
           success = false;
         }
       }
@@ -51,7 +54,7 @@ export function findWinner(_panelState, currentMove) {
       // break;
       // return true;
       return {
-        player: currentMove.id,
+        player: currentMove,
         success: true,
         tie: false
       };
@@ -71,7 +74,7 @@ export function findWinner(_panelState, currentMove) {
   console.log("findWinner count isEmpate", count);
   // return false;
   return {
-    player: 0,
+    player: null,
     success: false,
     tie: count === 24
   };
@@ -96,5 +99,5 @@ export function changeTurn(state, nodeElement) {
 }
 
 export function isCellEmpty(row, col) {
-  return GAME_STATE[row][col] === 0;
+  return PANEL_STATE[row][col] === 0;
 }
