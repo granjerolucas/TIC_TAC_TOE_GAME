@@ -146,8 +146,9 @@ const clickCard = (e) => {
     if (!res.success) {
       changeTurn(GAME_STATE, eleCurrentPlayer);
       if (res.tie) {
-        GAME_STATE.player1.score++;
-        GAME_STATE.player2.score++;
+        // GAME_STATE.player1.score++;
+        // GAME_STATE.player2.score++;
+        GAME_STATE.ties++;
         drawScore();
         modBody.querySelectorAll("p")[0].innerText = "TIE!";
         myModal.classList.add("show");
