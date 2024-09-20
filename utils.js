@@ -11,6 +11,7 @@ export function getBox(row, col) {
   let btn = document.createElement("button");
   let span = document.createElement("span");
   btn.value = `${row}-${col}`;
+  btn.id = `cell-${row}-${col}`;
   // btn.innerText = "-";
   // btn.innerText = `${row}-${col}`;
   span.innerText = ``;

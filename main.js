@@ -7,7 +7,7 @@ import {
   isCellEmpty,
 } from "./utils.js";
 console.log(PANEL_STATE);
-function getBaseState () {
+function getBaseState() {
   return {
     player1: {
       moveType: MOVE1,
@@ -22,8 +22,8 @@ function getBaseState () {
     ties: 0,
     currentMove: MOVE1,
     isVsPlayer: false,
-  }
-} 
+  };
+}
 var GAME_STATE = getBaseState();
 
 const gameBoard = document.querySelector(".game-board");
@@ -47,13 +47,13 @@ console.log(btnGame);
 
 btnGame.forEach((btn) => {
   btn.addEventListener("click", (e) => {
-    console.log(e.target.value);
-
     if (e.target.value === "quit") {
       myModal.classList.remove("show");
-      start()
+      start();
     } else {
+      //next
       cleanGame(true);
+      initCpu();
     }
 
     myModal.classList.remove("show");
@@ -76,13 +76,22 @@ btnRestarCondition.forEach((btn) => {
 btnPlay.forEach((btn) => {
   btn.addEventListener("click", () => {
     if (btn.value === "cpu") {
+      console.log("luna", { ...GAME_STATE });
       GAME_STATE.player1.isCpu = false;
       GAME_STATE.player2.isCpu = true;
+      // if (GAME_STATE.player1.moveType.id === MOVE1.id) {
+      //   GAME_STATE.player1.isCpu = false;
+      //   GAME_STATE.player2.isCpu = true;
+      // } else {
+      //   GAME_STATE.player1.isCpu = true;
+      //   GAME_STATE.player2.isCpu = false;
+      // }
+      GAME_STATE.isVsPlayer = true;
+      console.log("luna2", { ...GAME_STATE });
     } else {
       GAME_STATE.player1.isCpu = false;
       GAME_STATE.player2.isCpu = false;
     }
-
     init(true);
   });
 });
@@ -98,9 +107,7 @@ btnPlay.forEach((btn) => {
 //   }
 // }
 choiseMark.forEach((btn) => {
-  console.log(btn);
   btn.addEventListener("click", () => {
-    console.log(btn.parentNode);
     for (let i = 0; i < btn.parentNode.children.length; i++) {
       btn.parentNode.children[i].classList.remove("active");
     }
@@ -116,17 +123,11 @@ choiseMark.forEach((btn) => {
 });
 btnRestart.addEventListener("click", () => {
   modalRestart.classList.add("show");
-  
 });
 const clickCard = (e) => {
-  console.log(e);
-  console.log(e.currentTarget);
-  const target = e.currentTarget;
-  // const btn = target.closest("button");
   if (e.currentTarget) {
     const [row, col] = e.currentTarget.value.split("-");
     if (!isCellEmpty(row, col)) {
-      console.log("ocupado");
       return;
     }
     PANEL_STATE[row][col] = GAME_STATE.currentMove.id;
@@ -145,6 +146,12 @@ const clickCard = (e) => {
 
     if (!res.success) {
       changeTurn(GAME_STATE, eleCurrentPlayer);
+      if (
+        GAME_STATE.isVsPlayer &&
+        GAME_STATE.player2.moveType.id === GAME_STATE.currentMove.id
+      ) {
+        moveCpu(GAME_STATE.player2);
+      }
       if (res.tie) {
         // GAME_STATE.player1.score++;
         // GAME_STATE.player2.score++;
@@ -162,7 +169,6 @@ const clickCard = (e) => {
 
       drawScore();
       // cleanGame(true);
-      console.log("chuchas", [...PANEL_STATE]);
       gameBoard.querySelectorAll("button").forEach((btn) => {
         console.log(res.condition);
         res.condition.forEach((val) => {
@@ -220,6 +226,20 @@ function getWinner() {
   // });
 }
 
+function moveCpu(cpuPlayer) {
+  console.log("lquita", cpuPlayer);
+  setTimeout(() => {
+    let row = Math.floor(Math.random() * 3);
+    let col = Math.floor(Math.random() * 3);
+    console.log(isCellEmpty(row, col));
+    while (!isCellEmpty(row, col)) {
+      row = Math.floor(Math.random() * 3);
+      col = Math.floor(Math.random() * 3);
+    }
+    console.log("useeeee", row, col);
+    document.getElementById(`cell-${row}-${col}`).click();
+  }, 1000);
+}
 // getWinner();
 
 function cleanGame(reset = false) {
@@ -233,47 +253,53 @@ function cleanGame(reset = false) {
   cleanPanelState();
   if (reset) {
     GAME_STATE.currentMove = MOVE2;
-    //   GAME_STATE.player1.score = 0;
-    //   GAME_STATE.player1.score = 0;
-    //   GAME_STATE.cpu = 0;
-    //   GAME_STATE.ties = 0;
     changeTurn(GAME_STATE, eleCurrentPlayer);
   }
-  // } else {
-  // }
+
   gameBoard.querySelectorAll("button").forEach((btn) => {
     btn.addEventListener("click", clickCard);
   });
 }
 
-function init (reset = false) {
+function init(reset = false) {
   containerGame.classList.remove("d-none");
   optionsGame.classList.add("d-none");
   console.log({ ...GAME_STATE });
 
   if (GAME_STATE.player1.moveType.id === MOVE1.id) {
     boxPlayerA.querySelector("p").innerText = `X (PLAYER 1)`;
-    boxPlayerB.querySelector("p").innerText = `O (PLAYER 2)`;
+    boxPlayerB.querySelector("p").innerText = `O (${GAME_STATE.isVsPlayer ? "CPU" : "PLAYER 2"})`;
 
     boxPlayerA.querySelector("span").innerText = GAME_STATE.player1.score;
     boxPlayerB.querySelector("span").innerText = GAME_STATE.player2.score;
   } else {
-    boxPlayerA.querySelector("p").innerText = `X (PLAYER 2)`;
+    boxPlayerA.querySelector("p").innerText = `X (${GAME_STATE.isVsPlayer ? "CPU" : "PLAYER 2"})`;
     boxPlayerB.querySelector("p").innerText = `O (PLAYER 1)`;
   }
   boxPlayerTies.querySelector("span").innerText = 0;
   boxPlayerB.querySelector("span").innerText = 0;
   boxPlayerA.querySelector("span").innerText = 0;
   cleanGame(reset);
-};
+  initCpu();
+}
 
+function initCpu() {
+  if (GAME_STATE.isVsPlayer) {
+    if (
+      GAME_STATE.player2.moveType.id === MOVE1.id &&
+      GAME_STATE.player2.isCpu
+    ) {
+      moveCpu(GAME_STATE.player2);
+    }
+  }
+}
 
-function start () {
+function start() {
   containerGame.classList.add("d-none");
   optionsGame.classList.remove("d-none");
-  console.log('lanotaaaaaaaaaaa',{ ...getBaseState() });
+  console.log("lanotaaaaaaaaaaa", { ...getBaseState() });
   GAME_STATE = getBaseState();
-  console.log('lanotaaaaaaaaaaa2',{ ...GAME_STATE });
+  console.log("lanotaaaaaaaaaaa2", { ...GAME_STATE });
   // init();
 }
 start();
