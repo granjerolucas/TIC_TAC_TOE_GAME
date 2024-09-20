@@ -83,52 +83,49 @@ h2 {
   border-radius: var(--border-radius);
   button {
     border: none;
-  background-color: var(--action-color);
-  border-radius: var(--border-radius);
-  padding: 0px;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  box-shadow: 0px 0.6rem 0px 0px rgba(15, 32, 40, 0.75);
-  &.win {
-    &:has(span.o-move) {
-      background-color: var(--o-option);
-      
+    background-color: var(--action-color);
+    border-radius: var(--border-radius);
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0px 0.6rem 0px 0px rgba(15, 32, 40, 0.75);
+    &.win {
+      &:has(span.o-move) {
+        background-color: var(--o-option);
+      }
+      &:has(span.x-move) {
+        background-color: var(--x-option);
+      }
+      span:is(.x-move, .o-move) {
+        color: var(--action-color);
+      }
     }
-    &:has(span.x-move) {
-      background-color: var(--x-option);
-      
-    }
-    span:is(.x-move, .o-move) {
-      color: var(--action-color);
-    }
-   
-  }
     /* color: black; */
-  span {
+    span {
       /* display: flex; */
       padding-top: 1rem;
-  font-size: 5.5rem;
-  line-height: normal;
-  /* color: red; */
-  /* height: 100%;
+      font-size: 5.5rem;
+      line-height: normal;
+      /* color: red; */
+      /* height: 100%;
       width: 100%; */
-  /* height: 5.5rem;
+      /* height: 5.5rem;
       width:  5.5rem; */
-  /* text-align: center; */
-  /* vertical-align: baseline; */
-  /* height: 4rem; */
-  /* display: inline-block; */
-  /* border: 1px solid var(--text-color); */
+      /* text-align: center; */
+      /* vertical-align: baseline; */
+      /* height: 4rem; */
+      /* display: inline-block; */
+      /* border: 1px solid var(--text-color); */
       &.o-move {
-  color: var(--o-option);
+        color: var(--o-option);
       }
       &.x-move {
-  color: var(--x-option);
+        color: var(--x-option);
       }
     }
   }
@@ -298,7 +295,8 @@ h2 {
   }
 }
 
-#exampleModal, #modalRestart {
+#exampleModal,
+#modalRestart {
   font-family: "Roboto";
   color: var(--x-option);
   font-size: 3rem;
@@ -326,13 +324,13 @@ h2 {
         &.x-win {
           color: var(--x-option);
         }
-        
+
         p {
           font-size: 1.5rem;
           &:nth-child(2) {
             font-size: 3.2rem;
             span {
-              font-family: 'Arista20Alternate';
+              font-family: "Arista20Alternate";
               font-size: 4rem;
             }
           }
@@ -340,4 +338,38 @@ h2 {
       }
     }
   }
+}
+
+@media (min-width: 576px) {
+  /* body {
+    background-color: red !important;
+  } */
+}
+
+@media (min-width: 576px) {
+  /* body {
+    background-color: red !important;
+  } */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  /* body {
+    background-color: blue !important;
+  } */
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  /* body {
+    background-color: yellow !important;
+  } */
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
 }

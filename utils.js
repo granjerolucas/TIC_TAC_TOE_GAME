@@ -1,10 +1,5 @@
 import { PANEL_STATE, MOVE1, MOVE2, WIN_CONDITION } from "./game.js";
 
-{
-  /* <div class="card-action shadow-sm">
-  <button value="0-0">A</button>
-</div>; */
-}
 export function getBox(row, col) {
   let div = document.createElement("div");
   div.classList.add("card-action", "shadow-sm");
@@ -12,8 +7,6 @@ export function getBox(row, col) {
   let span = document.createElement("span");
   btn.value = `${row}-${col}`;
   btn.id = `cell-${row}-${col}`;
-  // btn.innerText = "-";
-  // btn.innerText = `${row}-${col}`;
   span.innerText = ``;
   btn.appendChild(span);
   div.appendChild(btn);
@@ -25,7 +18,6 @@ export function cleanPanelState() {
       PANEL_STATE[i][j] = 0;
     });
   });
-  console.log([...PANEL_STATE])
 }
 export function findWinner(_panelState, currentMove) {
   let count = 0;
@@ -37,13 +29,10 @@ export function findWinner(_panelState, currentMove) {
       if (PANEL_STATE[row][col] === 0) {
         //   // continue;
         success = false;
-        console.log("findWinner omitir en", row, col);
         continue;
 
         //   break;
       } else {
-        console.log("findWinner cond", row, col);
-        console.log("findWinner state", PANEL_STATE[row][col]);
         if (currentMove.id !== PANEL_STATE[row][col]) {
           success = false;
         }
@@ -51,34 +40,18 @@ export function findWinner(_panelState, currentMove) {
       count++;
     }
     if (success) {
-      console.log("findWinner won", currentMove);
-      // break;
-      // return true;
       return {
         condition: WIN_CONDITION[i],
         player: currentMove,
         success: true,
-        tie: false
+        tie: false,
       };
     }
-    // if (!success) {
-    //   break;
-    // }
-    console.log("findWinner cond -----------------------");
-
-    // let row = WIN_CONDITION[i][0];
-    // let col = WIN_CONDITION[i][1];
-    // console.log('findWinner', row, col);
-    // if (panelState[row][col] === currentMove.id) {
-    //   return panelState[row][col];
-    // }
   }
-  console.log("findWinner count isEmpate", count);
-  // return false;
   return {
     player: null,
     success: false,
-    tie: count === 24
+    tie: count === 24,
   };
 }
 /**

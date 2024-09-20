@@ -6,7 +6,6 @@ import {
   getBox,
   isCellEmpty,
 } from "./utils.js";
-console.log(PANEL_STATE);
 function getBaseState() {
   return {
     player1: {
@@ -42,8 +41,6 @@ const boxPlayerB = document.querySelector(".playerB");
 
 const myModal = document.querySelector("#exampleModal");
 const modalRestart = document.querySelector("#modalRestart");
-// myModal.show()
-console.log(btnGame);
 
 btnGame.forEach((btn) => {
   btn.addEventListener("click", (e) => {
@@ -62,7 +59,6 @@ btnGame.forEach((btn) => {
 
 btnRestarCondition.forEach((btn) => {
   btn.addEventListener("click", (e) => {
-    console.log(e.target.value);
     if (e.target.value === "yes") {
       // cleanGame(true);
       modalRestart.classList.remove("show");
@@ -76,7 +72,6 @@ btnRestarCondition.forEach((btn) => {
 btnPlay.forEach((btn) => {
   btn.addEventListener("click", () => {
     if (btn.value === "cpu") {
-      console.log("luna", { ...GAME_STATE });
       GAME_STATE.player1.isCpu = false;
       GAME_STATE.player2.isCpu = true;
       // if (GAME_STATE.player1.moveType.id === MOVE1.id) {
@@ -87,7 +82,6 @@ btnPlay.forEach((btn) => {
       //   GAME_STATE.player2.isCpu = false;
       // }
       GAME_STATE.isVsPlayer = true;
-      console.log("luna2", { ...GAME_STATE });
     } else {
       GAME_STATE.player1.isCpu = false;
       GAME_STATE.player2.isCpu = false;
@@ -95,17 +89,7 @@ btnPlay.forEach((btn) => {
     init(true);
   });
 });
-// gameBoard.addEventListener("click", );
 
-// function rrrr(prevValue, indexRow = 0, indexCol = 0) {
-//   console.log(prevValue, indexRow, indexCol);
-//   let current = GAME_STATE[indexRow][indexCol];
-//   if (prevValue == current) {
-//     return rrrr(current, indexRow, indexCol + 1);
-//   } else {
-//     return rrrr(current, indexRow + 1, 0);
-//   }
-// }
 choiseMark.forEach((btn) => {
   btn.addEventListener("click", () => {
     for (let i = 0; i < btn.parentNode.children.length; i++) {
@@ -138,8 +122,6 @@ const clickCard = (e) => {
     } else {
       span.classList.add("o-move");
     }
-    console.log(span);
-    console.log(PANEL_STATE);
     e.currentTarget.replaceChild(span, e.currentTarget.firstChild);
     let res = findWinner([], GAME_STATE.currentMove);
     const modBody = myModal.querySelector(".modal-body");
@@ -153,8 +135,6 @@ const clickCard = (e) => {
         moveCpu(GAME_STATE.player2);
       }
       if (res.tie) {
-        // GAME_STATE.player1.score++;
-        // GAME_STATE.player2.score++;
         GAME_STATE.ties++;
         drawScore();
         modBody.querySelectorAll("p")[0].innerText = "TIE!";
@@ -170,7 +150,6 @@ const clickCard = (e) => {
       drawScore();
       // cleanGame(true);
       gameBoard.querySelectorAll("button").forEach((btn) => {
-        console.log(res.condition);
         res.condition.forEach((val) => {
           if (btn.value === `${val[0]}-${val[1]}`) {
             btn.classList.add("win");
@@ -191,9 +170,7 @@ const clickCard = (e) => {
 
       myModal.classList.add("show");
     }
-    console.log("resultado", res);
   }
-  // console.log(e.currentTarget);
 };
 function drawScore() {
   boxPlayerTies.querySelector("span").innerText = GAME_STATE.ties;
@@ -212,35 +189,24 @@ function getWinner() {
         if (i !== 0 && j !== 0) {
           let prev = PANEL_STATE[i][j];
           let curr = PANEL_STATE[i][j];
-          console.log(prev, curr);
         }
         // let prev = GAME_STATE[i - 1][j - 1];
       }
     }
   }
-  // GAME_STATE.forEach((val, i) => {
-  //   val.forEach((valS, j) => {
-  //     console.log(i, j);
-
-  //   });
-  // });
 }
 
 function moveCpu(cpuPlayer) {
-  console.log("lquita", cpuPlayer);
   setTimeout(() => {
     let row = Math.floor(Math.random() * 3);
     let col = Math.floor(Math.random() * 3);
-    console.log(isCellEmpty(row, col));
     while (!isCellEmpty(row, col)) {
       row = Math.floor(Math.random() * 3);
       col = Math.floor(Math.random() * 3);
     }
-    console.log("useeeee", row, col);
     document.getElementById(`cell-${row}-${col}`).click();
   }, 1000);
 }
-// getWinner();
 
 function cleanGame(reset = false) {
   gameBoard.innerHTML = "";
@@ -264,16 +230,19 @@ function cleanGame(reset = false) {
 function init(reset = false) {
   containerGame.classList.remove("d-none");
   optionsGame.classList.add("d-none");
-  console.log({ ...GAME_STATE });
 
   if (GAME_STATE.player1.moveType.id === MOVE1.id) {
     boxPlayerA.querySelector("p").innerText = `X (PLAYER 1)`;
-    boxPlayerB.querySelector("p").innerText = `O (${GAME_STATE.isVsPlayer ? "CPU" : "PLAYER 2"})`;
+    boxPlayerB.querySelector("p").innerText = `O (${
+      GAME_STATE.isVsPlayer ? "CPU" : "PLAYER 2"
+    })`;
 
     boxPlayerA.querySelector("span").innerText = GAME_STATE.player1.score;
     boxPlayerB.querySelector("span").innerText = GAME_STATE.player2.score;
   } else {
-    boxPlayerA.querySelector("p").innerText = `X (${GAME_STATE.isVsPlayer ? "CPU" : "PLAYER 2"})`;
+    boxPlayerA.querySelector("p").innerText = `X (${
+      GAME_STATE.isVsPlayer ? "CPU" : "PLAYER 2"
+    })`;
     boxPlayerB.querySelector("p").innerText = `O (PLAYER 1)`;
   }
   boxPlayerTies.querySelector("span").innerText = 0;
@@ -297,10 +266,6 @@ function initCpu() {
 function start() {
   containerGame.classList.add("d-none");
   optionsGame.classList.remove("d-none");
-  console.log("lanotaaaaaaaaaaa", { ...getBaseState() });
   GAME_STATE = getBaseState();
-  console.log("lanotaaaaaaaaaaa2", { ...GAME_STATE });
-  // init();
 }
 start();
-// init();
